@@ -12,7 +12,7 @@ interface Encryptor
     public function encrypt(array $data, ?callable $encryptionMethod = null): array;
 
     /**
-     * @param  null|callable(string): string  $decryptionMethod
+     * @param  null|callable(string): string  $decryptionMethod  Should return false if input string is not encrypted
      */
     public function decrypt(array $data, ?callable $decryptionMethod = null): array;
 }
