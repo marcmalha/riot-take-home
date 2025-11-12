@@ -46,4 +46,61 @@ class EncryptionControllerTest extends TestCase
             'contact.phone',
         ]));
     }
+
+    public function test_decryption_endpoint_keeps_types_unchanged(): void
+    {
+        $dataToEncrypt = [
+            'age' => 30,
+            'contact' => [
+                'email' => 'john@example.com',
+                'phone' => '123-456-7890',
+            ],
+        ];
+
+        $encryptedData = $this->postJson(
+            'encrypt',
+            data: $dataToEncrypt,
+        )->json();
+
+        $decryptedData = $this->postJson(
+            'decrypt',
+            $encryptedData,
+        )->json();
+
+        assertEqualsCanonicalizing($dataToEncrypt, $decryptedData);
+    }
+
+    public function test_decryption_keeps_unencyrpted_data_unchanged(): void
+    {
+        $dataToEncrypt = [
+            'name' => 'John Doe',
+            'age' => 30,
+            'contact' => [
+                'email' => 'john@example.com',
+                'phone' => '123-456-7890',
+            ],
+        ];
+
+        $encryptedData = $this->postJson(
+            'encrypt',
+            data: $dataToEncrypt,
+        )->collect();
+
+        $additionalProperty = [
+            'birth_date' => '1998-11-19',
+        ];
+        $encryptedDataWithAdditionalProperty = $encryptedData
+            ->merge($additionalProperty)
+            ->toArray();
+        $dataToEncryptWithAdditionalProperty = collect($dataToEncrypt)
+            ->merge($additionalProperty)
+            ->toArray();
+
+        $decryptedData = $this->postJson(
+            'decrypt',
+            $encryptedDataWithAdditionalProperty,
+        )->json();
+
+        assertEqualsCanonicalizing($dataToEncryptWithAdditionalProperty, $decryptedData);
+    }
 }
