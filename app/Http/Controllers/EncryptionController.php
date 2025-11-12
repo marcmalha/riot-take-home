@@ -12,9 +12,19 @@ class EncryptionController extends Controller
     public function encrypt(Request $request): Response|JsonResponse
     {
         $data = $request->json()->all();
-        $encryptor = app(Encryptor::class);
 
+        $encryptor = app(Encryptor::class);
         $encryptedData = $encryptor->encrypt($data);
+
+        return response()->json($encryptedData);
+    }
+
+    public function decrypt(Request $request): Response|JsonResponse
+    {
+        $data = $request->json()->all();
+
+        $encryptor = app(Encryptor::class);
+        $encryptedData = $encryptor->decrypt($data);
 
         return response()->json($encryptedData);
     }
