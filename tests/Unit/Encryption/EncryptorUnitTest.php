@@ -5,9 +5,6 @@ namespace Tests\Unit\Encryption;
 use App\Services\Encryptor\Contracts\Encryptor;
 use Tests\TestCase;
 
-use function PHPUnit\Framework\assertEqualsCanonicalizing;
-use function PHPUnit\Framework\assertFalse;
-
 class EncryptorUnitTest extends TestCase
 {
     protected Encryptor $encryptor;
@@ -29,7 +26,7 @@ class EncryptorUnitTest extends TestCase
 
         $encryptedData = $this->encryptor->encrypt($dataToEncrypt);
 
-        assertEqualsCanonicalizing(array_keys($dataToEncrypt), array_keys($encryptedData));
+        $this->assertEqualsCanonicalizing(array_keys($dataToEncrypt), array_keys($encryptedData));
     }
 
     public function test_encryptor_encrypts_only_at_depth_1(): void
@@ -52,7 +49,7 @@ class EncryptorUnitTest extends TestCase
                 'contact.phone',
             ]);
 
-        assertFalse($isMultiDepth);
+        $this->assertFalse($isMultiDepth);
     }
 
     public function test_decryptor_keeps_types_unchanged(): void
@@ -69,7 +66,7 @@ class EncryptorUnitTest extends TestCase
 
         $decryptedData = $this->encryptor->decrypt($encryptedData);
 
-        assertEqualsCanonicalizing($dataToEncrypt, $decryptedData);
+        $this->assertEqualsCanonicalizing($dataToEncrypt, $decryptedData);
     }
 
     public function test_decryption_keeps_unencyrpted_data_unchanged(): void
@@ -97,6 +94,6 @@ class EncryptorUnitTest extends TestCase
 
         $decryptedData = $this->encryptor->decrypt($encryptedDataWithAdditionalProperty);
 
-        assertEqualsCanonicalizing($dataToEncryptWithAdditionalProperty, $decryptedData);
+        $this->assertEqualsCanonicalizing($dataToEncryptWithAdditionalProperty, $decryptedData);
     }
 }
