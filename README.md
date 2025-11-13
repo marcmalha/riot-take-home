@@ -1,7 +1,5 @@
 # Riot Take-Home Technical Challenge
 
---- 
-
 ## Table of Contents
 
 - [Overview](#overview)
@@ -13,23 +11,15 @@
 
 ## Overview
 
----
-
 API implemented in PHP using the Laravel framework. \
 Exposes 4 endpoints `/encrypt`, `/decrypt`, `/sign`, `/verify`, as specified in this [repository](https://github.com/tryriot/take-home).
 
----
-
 ## Prerequisites
-
----
 
 - Have `composer` installed, the PHP package manager, via your favorite package manager on your machine or their [download page](https://getcomposer.org/download/).
 - Have Docker installed on your machine.
 
 ## Setup
-
----
 
 #### Step 1
 Install project dependencies using the following bash command:
@@ -41,8 +31,10 @@ This will also install `laravel/sail`, the Laravel package that provides us with
 
 #### Step 2
 
-You need to provide the private key used by the HMAC algorithm through the following env variable: `DATA_SIGNATURE_KEY`   
+You **must** provide the private key used by the HMAC algorithm through the following env variable: `DATA_SIGNATURE_KEY`
 
+You can also configure the hashing algorithm used by HMAC via `DATA_SIGNATURE_HASHING_ALGO` to use any of the ones listed [here](https://www.php.net/manual/en/function.hash-hmac-algos.php). \
+If `DATA_SIGNATURE_HASHING_ALGO` is left empty, sha256 will be used by default.
 
 #### Step 3
 Once the project dependencies are installed, we can build the docker image for the API using:
@@ -51,8 +43,6 @@ Once the project dependencies are installed, we can build the docker image for t
 ```
 
 ## Running the API
-
----
 You only need to run the following command:
 ```bash
 ./vendor/bin/sail up
@@ -71,8 +61,6 @@ and then stop the containers using:
 ```
 
 ## Running Tests
-
----
 To run Unit and Integration tests, make sure the API is running through `sail` and then:
 ```bash
 ./vendor/bin/sail test
