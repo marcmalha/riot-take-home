@@ -9,12 +9,18 @@ use Illuminate\Http\Response;
 
 class EncryptionController extends Controller
 {
+    protected Encryptor $encryptor;
+
+    public function __construct()
+    {
+        $this->encryptor = app()->make(Encryptor::class);
+    }
+
     public function encrypt(Request $request): Response|JsonResponse
     {
         $data = $request->json()->all();
 
-        $encryptor = app()->make(Encryptor::class);
-        $encryptedData = $encryptor->encrypt($data);
+        $encryptedData = $this->encryptor->encrypt($data);
 
         return response()->json($encryptedData);
     }
@@ -23,8 +29,8 @@ class EncryptionController extends Controller
     {
         $data = $request->json()->all();
 
-        $encryptor = app()->make(Encryptor::class);
-        $encryptedData = $encryptor->decrypt($data);
+        $this->encryptor = app()->make(Encryptor::class);
+        $encryptedData = $this->encryptor->decrypt($data);
 
         return response()->json($encryptedData);
     }

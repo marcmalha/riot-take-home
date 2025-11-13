@@ -9,14 +9,19 @@ use Illuminate\Http\Response;
 
 class DataSignatureController extends Controller
 {
+    protected DataSignatureProvider $dataSignatureProvider;
+
+    public function __construct()
+    {
+        $this->dataSignatureProvider = app()->make(DataSignatureProvider::class);
+    }
+
     public function sign(Request $request): JsonResponse
     {
         $payload = $request->json()->all();
-        /** @var DataSignatureProvider $dataSignatureProvider */
-        $dataSignatureProvider = app()->make(DataSignatureProvider::class);
 
         return response()->json([
-            'signature' => $dataSignatureProvider->sign($payload),
+            'signature' => $this->dataSignatureProvider->sign($payload),
         ]);
     }
 
@@ -27,10 +32,7 @@ class DataSignatureController extends Controller
             'data' => 'required',
         ]);
 
-        /** @var DataSignatureProvider $dataSignatureProvider */
-        $dataSignatureProvider = app()->make(DataSignatureProvider::class);
-
-        $isSignatureValid = $dataSignatureProvider->verify(
+        $isSignatureValid = $this->dataSignatureProvider->verify(
             $validatedPayload['signature'],
             $validatedPayload['data']
         );
@@ -39,6 +41,9 @@ class DataSignatureController extends Controller
             return response()->json(status: Response::HTTP_NO_CONTENT);
         }
 
-        return response()->json(status: Response::HTTP_BAD_REQUEST);
+        return response()->json(
+            data: ['error' => 'Invalid Signature'],
+            status: Response::HTTP_BAD_REQUEST
+        );
     }
 }
