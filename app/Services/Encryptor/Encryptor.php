@@ -39,6 +39,10 @@ class Encryptor implements Contracts\Encryptor
 
         return collect($data)
             ->map(function ($value) use ($decryptionMethod) {
+                if (! is_string($value)) {
+                    return $value;
+                }
+
                 $decryptedValue = $decryptionMethod($value);
 
                 if ($decryptedValue === false) {
