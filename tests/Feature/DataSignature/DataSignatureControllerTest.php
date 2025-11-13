@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Signature;
+namespace Tests\Feature\DataSignature;
 
 use Illuminate\Http\Response;
 use Tests\TestCase;
@@ -31,7 +31,7 @@ class DataSignatureControllerTest extends TestCase
         ]);
     }
 
-    public function test_verify_endpoint_returns_200_if_signature_valid(): void
+    public function test_verify_endpoint_returns_204_if_signature_valid(): void
     {
         $signature = $this->postJson(
             'sign',
@@ -50,10 +50,10 @@ class DataSignatureControllerTest extends TestCase
                     'timestamp' => 1616161616,
                 ],
             ]
-        )->assertStatus(Response::HTTP_OK);
+        )->assertStatus(Response::HTTP_NO_CONTENT);
     }
 
-    public function test_verify_endpoint_returns_400_if_input_json_has_invalid_structure(): void
+    public function test_verify_endpoint_returns_422_if_input_json_has_invalid_structure(): void
     {
         $this->postJson(
             'verify',
@@ -63,7 +63,7 @@ class DataSignatureControllerTest extends TestCase
                     'timestamp' => 1616161616,
                 ],
             ]
-        )->assertStatus(Response::HTTP_BAD_REQUEST);
+        )->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_verify_endpoint_returns_400_if_signature_invalid(): void

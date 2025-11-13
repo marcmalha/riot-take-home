@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\EncryptionController;
 use App\Http\Controllers\DataSignatureController;
+use App\Http\Controllers\EncryptionController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/encrypt', [EncryptionController::class, 'encrypt']);
