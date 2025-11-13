@@ -84,6 +84,7 @@ class EncryptorUnitTest extends TestCase
 
         $additionalProperty = [
             'birth_date' => '1998-11-19',
+            'array_data' => [1, 2, 3, 4],
         ];
         $encryptedDataWithAdditionalProperty = collect($encryptedData)
             ->merge($additionalProperty)
