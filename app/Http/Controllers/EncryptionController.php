@@ -13,7 +13,7 @@ class EncryptionController extends Controller
     {
         $data = $request->json()->all();
 
-        $encryptor = app(Encryptor::class);
+        $encryptor = app()->make(Encryptor::class);
         $encryptedData = $encryptor->encrypt($data);
 
         return response()->json($encryptedData);
@@ -23,7 +23,7 @@ class EncryptionController extends Controller
     {
         $data = $request->json()->all();
 
-        $encryptor = app(Encryptor::class);
+        $encryptor = app()->make(Encryptor::class);
         $encryptedData = $encryptor->decrypt($data);
 
         return response()->json($encryptedData);

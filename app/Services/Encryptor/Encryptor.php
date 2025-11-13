@@ -20,6 +20,9 @@ class Encryptor implements Contracts\Encryptor
 
         return collect($data)
             ->map(function ($value) use ($encryptionMethod) {
+                // we're json encoding to not lose the type of the value when later decoding
+                // in other words, if we cast the value to string in order to base64_encode,
+                // we can't know if integer values were initially stored as strings or as numbers in the json input data
                 $jsonEncodedValue = json_encode($value);
 
                 return $encryptionMethod($jsonEncodedValue);
