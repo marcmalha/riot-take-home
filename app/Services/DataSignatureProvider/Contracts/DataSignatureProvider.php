@@ -4,7 +4,7 @@ namespace App\Services\DataSignatureProvider\Contracts;
 
 interface DataSignatureProvider
 {
-    public function sign(array $data): string;
+    public function sign(mixed $data): string;
 
-    public function verify(string $signature, array $data): bool;
+    public function verify(string $signature, mixed $data): bool;
 }

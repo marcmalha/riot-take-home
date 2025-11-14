@@ -29,7 +29,7 @@ class DataSignatureController extends Controller
     {
         $validatedPayload = $request->validate([
             'signature' => 'required',
-            'data' => 'required',
+            'data' => 'present|nullable',
         ]);
 
         $isSignatureValid = $this->dataSignatureProvider->verify(
