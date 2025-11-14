@@ -16,6 +16,7 @@ Exposes 4 endpoints `/encrypt`, `/decrypt`, `/sign`, `/verify`, as specified in 
 
 ## Prerequisites
 
+- Have PHP installed
 - Have `composer` installed, the PHP package manager, via your favorite package manager on your machine or their [download page](https://getcomposer.org/download/).
 - Have Docker installed on your machine.
 
