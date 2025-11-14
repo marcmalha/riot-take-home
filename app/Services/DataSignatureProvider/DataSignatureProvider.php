@@ -9,7 +9,7 @@ class DataSignatureProvider implements DataSignatureProviderContract
     // Can be any of the values obtained from hash_hmac_algos()
     const HASHING_ALGORITHM = 'sha256';
 
-    public function sign(array $data): string
+    public function sign(mixed $data): string
     {
         $hashingAlgorithm = env('DATA_SIGNATURE_HASHING_ALGO') ?: self::HASHING_ALGORITHM;
 
@@ -21,7 +21,7 @@ class DataSignatureProvider implements DataSignatureProviderContract
         return hash_hmac($hashingAlgorithm, $normalizedData, env('DATA_SIGNATURE_KEY'));
     }
 
-    public function verify(string $signature, array $data): bool
+    public function verify(string $signature, mixed $data): bool
     {
         $computedSignature = $this->sign($data);
 
