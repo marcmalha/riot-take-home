@@ -22,7 +22,7 @@ Exposes 4 endpoints `/encrypt`, `/decrypt`, `/sign`, `/verify`, as specified in 
 
 ## Setup
 
-#### Step 1
+#### Step 1 - Project Dependencies
 Install project dependencies using the following bash command:
 
 ```bash
@@ -30,15 +30,20 @@ composer install
 ```
 This will also install `laravel/sail`, the Laravel package that provides us with docker functionalities to run the project.
 
-#### Step 2
+#### Step 2 - Environment Variables
 
-You **must** provide the private key used by the HMAC algorithm through the following env variable: `DATA_SIGNATURE_KEY`
+Create the `.env` file at the root of the project using:
+```bash
+cp .env.example .env
+```
+
+You **must** then provide the private key (any random string will do) used by the HMAC algorithm through the following env variable: `DATA_SIGNATURE_KEY`
 
 You can also configure the hashing algorithm used by HMAC via `DATA_SIGNATURE_HASHING_ALGO` to use any of the ones listed [here](https://www.php.net/manual/en/function.hash-hmac-algos.php). \
 If `DATA_SIGNATURE_HASHING_ALGO` is left empty, sha256 will be used by default.
 
-#### Step 3
-Once the project dependencies are installed, we can build the docker image for the API using:
+#### Step 3 - Building Docker image
+We can now build the docker image for the API using:
 ```bash
 ./vendor/bin/sail build
 ```
@@ -62,7 +67,7 @@ and then stop the containers using:
 ```
 
 ## Running Tests
-To run Unit and Integration tests, make sure the API is running through `sail` and then:
+To run Unit and Integration tests, make sure the **API is running** through `sail` and then:
 ```bash
 ./vendor/bin/sail test
 ```
