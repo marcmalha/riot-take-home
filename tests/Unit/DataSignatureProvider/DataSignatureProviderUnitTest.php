@@ -3,11 +3,12 @@
 namespace Tests\Unit\DataSignatureProvider;
 
 use App\Services\DataSignatureProvider\Contracts\DataSignatureProvider;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class DataSignatureProviderUnitTest extends TestCase
 {
-    public function test_signature_depends_on_input_payload_value(): void
+    public function test_signature_depends_only_on_input_payload_value(): void
     {
         $payload = [
             'message' => 'Hello World',
@@ -38,22 +39,11 @@ class DataSignatureProviderUnitTest extends TestCase
         $this->assertTrue(hash_equals($dataSignatureProvider->sign($payload), $dataSignatureProvider->sign($flippedKeysPayload)));
     }
 
-    public function test_data_signature_provider_can_verify_signature(): void
+    #[DataProvider('exhaustiveJsonProvider')]
+    public function test_data_signature_provider_can_verify_signature($data): void
     {
         /** @var DataSignatureProvider $dataSignatureProvider */
         $dataSignatureProvider = app()->make(DataSignatureProvider::class);
-
-        $data = [
-            'message' => 'Hello World',
-            'timestamp' => 1616161616,
-            'order' => [
-                'hello' => [
-                    '1' => 1,
-                    '2' => 2,
-                ],
-                'world' => 'qwerqwer',
-            ],
-        ];
 
         $signature = $dataSignatureProvider->sign($data);
 
@@ -78,5 +68,28 @@ class DataSignatureProviderUnitTest extends TestCase
         ];
 
         $this->assertFalse($dataSignatureProvider->verify('1nv4lid_s1gn4ture', $data));
+    }
+
+    public static function exhaustiveJsonProvider(): array
+    {
+        return [
+            [[
+                'message' => 'Hello World',
+                'timestamp' => 1616161616,
+                'order' => [
+                    'hello' => [
+                        '1' => 1,
+                        '2' => 2,
+                    ],
+                    'world' => 'qwerqwer',
+                ],
+            ]],
+            ['any_string_value'],
+            [true],
+            [false],
+            [null],
+            [[1, 2, 3, 4]],
+            [123456],
+        ];
     }
 }
